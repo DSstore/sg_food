@@ -66,8 +66,6 @@ pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pycosat==0.6.3
 pydeck==0.7.1
-pyls-spyder==0.4.0
-pyodbc===4.0.0-unsupported
 pyreadline==2.1
 pytest==6.2.4
 python-lsp-jsonrpc==1.0.0
