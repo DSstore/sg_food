@@ -9,3 +9,4 @@ streamlit==0.76.0
 tables==3.6.1
 tensorflow==2.7.0
 tensorflow-io-gcs-filesystem==0.24.0
+beautifulsoup4
