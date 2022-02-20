@@ -12,15 +12,10 @@ import tensorflow as tf
 import tensorflow_hub as hub
 from utils import get_calories, get_2_classes, get_10_classes, get_20_classes
 
-# Setup environment credentials (you'll need to change these)
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "ai-practical-74388243c98a.json" 
-PROJECT = "food_model" # change for your GCP project
-REGION = "us-central1" # change for your GCP region (where your model is hosted)
-
 st.set_page_config(page_title="SG Snap Food",
                    page_icon="🍔")
 
-model = load_model('efficientnet_model_1.h5', custom_objects={'KerasLayer':hub.KerasLayer})
+
 labels = {0: 'Hainanese Chicken Rice', 1: 'apple', 2: 'bak kut teh', 3: 'banana', 4: 'char kway teow',
           5: 'chendol', 6: 'curry puff', 7: 'grapes', 8: 'kiwi', 9: 'laksa',
           10: 'mango', 11: 'nasi lemak', 12: 'orange', 13: 'oyster omelette', 14: 'pear',
@@ -87,7 +82,7 @@ def processed_img(img_path,model,class_names):
 def run():
     st.image("https://github.com/DSstore/AIP/raw/main/snapfood.gif")
     app_mode = st.sidebar.selectbox("Choose the Classification Model",
-        ["Binary Classification Model", "Multi-Class Classification Model", "EfficientNet Model"])
+        ["Binary Classification Model", "Multi-Class Classification Model", "EfficientNet Model_V1"])
 
     
     if app_mode == "Binary Classification Model":
@@ -114,7 +109,7 @@ def run():
         class_names = get_10_classes()
         st.sidebar.write("Number of identified food:  ", len(class_names))
         st.sidebar.table(class_names)
-    elif app_mode == "EfficientNet Model":
+    elif app_mode == "EfficientNet Model_V1":
         col1, col2 = st.sidebar.columns(2)
         col1.metric("Loss", "0.19")
         col2.metric("Accuracy", "98%")    
@@ -130,8 +125,13 @@ def run():
     st.sidebar.title("**Disclaimer**")
     st.sidebar.write("Daily values are based on 2000 calorie diet and 155 lbs body weight.\nActual daily nutrient requirements might be different based on your age, gender, level of physical activity, medical history, and other factors.\nAll data displayed on this site is for general informational purposes only and should not be considered a substitute of a doctor's advice. Please consult with your doctor before making any changes to your diet.\nNutrition labels presented on this site is for illustration purposes only. Food images may show a similar or a related product and are not meant to be used for food identification.\nNutritional value of a cooked product is provided for the given weight of cooked food. \nData from USDA National Nutrient Database.")
 
-        
-    img_file = st.file_uploader("Choose an Image", type=["jpg", "png"])
+    application_mode = st.radio(
+        "Select your capture mode",
+        ('Images', 'Camera'))
+    if application_mode == 'Images':
+        img_file = st.file_uploader("Choose an Image", type=["jpg", "png"])
+    else:
+        img_file = st.camera_input("Take a picture")
 
     if not img_file:
         st.warning("Please upload an image")
